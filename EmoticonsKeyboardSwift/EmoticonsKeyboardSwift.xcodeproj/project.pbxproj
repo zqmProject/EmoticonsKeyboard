@@ -92,9 +92,10 @@
 		9B22414E1D827DFE000C5D5E /* [#imgface8#].png in Resources */ = {isa = PBXBuildFile; fileRef = 9B2240FE1D827DFE000C5D5E /* [#imgface8#].png */; };
 		9B22414F1D827DFE000C5D5E /* [#imgface80#].png in Resources */ = {isa = PBXBuildFile; fileRef = 9B2240FF1D827DFE000C5D5E /* [#imgface80#].png */; };
 		9B2241501D827DFE000C5D5E /* [#imgface9#].png in Resources */ = {isa = PBXBuildFile; fileRef = 9B2241001D827DFE000C5D5E /* [#imgface9#].png */; };
-		9B2241551D828099000C5D5E /* shiguang_pinglun_biaoqing_btn_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B2241521D828099000C5D5E /* shiguang_pinglun_biaoqing_btn_icon@3x.png */; };
-		9B2241561D828099000C5D5E /* shiguang_pinglun_biaoqing_delete_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B2241531D828099000C5D5E /* shiguang_pinglun_biaoqing_delete_icon@3x.png */; };
-		9B2241571D828099000C5D5E /* shiguang_pinglun_jianpan_btn_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B2241541D828099000C5D5E /* shiguang_pinglun_jianpan_btn_icon@3x.png */; };
+		9B2241591D828207000C5D5E /* QMEmoticonsKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2241581D828207000C5D5E /* QMEmoticonsKeyboard.swift */; };
+		9B22415B1D82866D000C5D5E /* QMInputBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B22415A1D82866D000C5D5E /* QMInputBar.swift */; };
+		9B2241651D82E74D000C5D5E /* QMEmoticonBoardPageNormalCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2241641D82E74D000C5D5E /* QMEmoticonBoardPageNormalCollectionCell.swift */; };
+		9B2241671D830C90000C5D5E /* QMEmoticonUIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2241661D830C90000C5D5E /* QMEmoticonUIButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -185,9 +186,10 @@
 		9B2240FE1D827DFE000C5D5E /* [#imgface8#].png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "[#imgface8#].png"; sourceTree = "<group>"; };
 		9B2240FF1D827DFE000C5D5E /* [#imgface80#].png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "[#imgface80#].png"; sourceTree = "<group>"; };
 		9B2241001D827DFE000C5D5E /* [#imgface9#].png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "[#imgface9#].png"; sourceTree = "<group>"; };
-		9B2241521D828099000C5D5E /* shiguang_pinglun_biaoqing_btn_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shiguang_pinglun_biaoqing_btn_icon@3x.png"; sourceTree = "<group>"; };
-		9B2241531D828099000C5D5E /* shiguang_pinglun_biaoqing_delete_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shiguang_pinglun_biaoqing_delete_icon@3x.png"; sourceTree = "<group>"; };
-		9B2241541D828099000C5D5E /* shiguang_pinglun_jianpan_btn_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shiguang_pinglun_jianpan_btn_icon@3x.png"; sourceTree = "<group>"; };
+		9B2241581D828207000C5D5E /* QMEmoticonsKeyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QMEmoticonsKeyboard.swift; sourceTree = "<group>"; };
+		9B22415A1D82866D000C5D5E /* QMInputBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QMInputBar.swift; sourceTree = "<group>"; };
+		9B2241641D82E74D000C5D5E /* QMEmoticonBoardPageNormalCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QMEmoticonBoardPageNormalCollectionCell.swift; sourceTree = "<group>"; };
+		9B2241661D830C90000C5D5E /* QMEmoticonUIButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QMEmoticonUIButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -235,6 +237,10 @@
 			isa = PBXGroup;
 			children = (
 				9B2240AF1D827DFE000C5D5E /* Resources */,
+				9B2241581D828207000C5D5E /* QMEmoticonsKeyboard.swift */,
+				9B22415A1D82866D000C5D5E /* QMInputBar.swift */,
+				9B2241641D82E74D000C5D5E /* QMEmoticonBoardPageNormalCollectionCell.swift */,
+				9B2241661D830C90000C5D5E /* QMEmoticonUIButton.swift */,
 			);
 			path = EmoticonsKeyboard;
 			sourceTree = "<group>";
@@ -242,7 +248,6 @@
 		9B2240AF1D827DFE000C5D5E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				9B2241511D828099000C5D5E /* KeyboardBar */,
 				9B2240B01D827DFE000C5D5E /* Emoji */,
 			);
 			path = Resources;
@@ -335,16 +340,6 @@
 			path = Emoji;
 			sourceTree = "<group>";
 		};
-		9B2241511D828099000C5D5E /* KeyboardBar */ = {
-			isa = PBXGroup;
-			children = (
-				9B2241521D828099000C5D5E /* shiguang_pinglun_biaoqing_btn_icon@3x.png */,
-				9B2241531D828099000C5D5E /* shiguang_pinglun_biaoqing_delete_icon@3x.png */,
-				9B2241541D828099000C5D5E /* shiguang_pinglun_jianpan_btn_icon@3x.png */,
-			);
-			path = KeyboardBar;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -414,7 +409,6 @@
 				9B22410F1D827DFE000C5D5E /* [#imgface22#].png in Resources */,
 				9B2241041D827DFE000C5D5E /* [#imgface12#].png in Resources */,
 				9B2241271D827DFE000C5D5E /* [#imgface44#].png in Resources */,
-				9B2241571D828099000C5D5E /* shiguang_pinglun_jianpan_btn_icon@3x.png in Resources */,
 				9B2241111D827DFE000C5D5E /* [#imgface24#].png in Resources */,
 				9B2241071D827DFE000C5D5E /* [#imgface15#].png in Resources */,
 				9B2241361D827DFE000C5D5E /* [#imgface58#].png in Resources */,
@@ -445,7 +439,6 @@
 				9B22412C1D827DFE000C5D5E /* [#imgface49#].png in Resources */,
 				9B2241441D827DFE000C5D5E /* [#imgface70#].png in Resources */,
 				9B2241341D827DFE000C5D5E /* [#imgface56#].png in Resources */,
-				9B2241561D828099000C5D5E /* shiguang_pinglun_biaoqing_delete_icon@3x.png in Resources */,
 				9B2241021D827DFE000C5D5E /* [#imgface10#].png in Resources */,
 				9B2241281D827DFE000C5D5E /* [#imgface45#].png in Resources */,
 				9B2241491D827DFE000C5D5E /* [#imgface75#].png in Resources */,
@@ -482,7 +475,6 @@
 				9B22414A1D827DFE000C5D5E /* [#imgface76#].png in Resources */,
 				9B2241141D827DFE000C5D5E /* [#imgface27#].png in Resources */,
 				9B2241171D827DFE000C5D5E /* [#imgface3#].png in Resources */,
-				9B2241551D828099000C5D5E /* shiguang_pinglun_biaoqing_btn_icon@3x.png in Resources */,
 				9B2241091D827DFE000C5D5E /* [#imgface17#].png in Resources */,
 				9B2241391D827DFE000C5D5E /* [#imgface60#].png in Resources */,
 				9B2241101D827DFE000C5D5E /* [#imgface23#].png in Resources */,
@@ -500,7 +492,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B22409F1D827D5A000C5D5E /* ViewController.swift in Sources */,
+				9B2241671D830C90000C5D5E /* QMEmoticonUIButton.swift in Sources */,
+				9B2241591D828207000C5D5E /* QMEmoticonsKeyboard.swift in Sources */,
+				9B22415B1D82866D000C5D5E /* QMInputBar.swift in Sources */,
 				9B22409D1D827D5A000C5D5E /* AppDelegate.swift in Sources */,
+				9B2241651D82E74D000C5D5E /* QMEmoticonBoardPageNormalCollectionCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
