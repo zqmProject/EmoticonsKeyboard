@@ -15,7 +15,7 @@ private let kScreenHeight = kScreenSize.height
 private let kEmoticonsKeyBoardFrame = CGRectMake(0, 0, kScreenWidth, 224.0)
 
 @objc protocol QMEmoticonsKeyboardDelegate: NSObjectProtocol {
-    optional func emoticonsKeyboard(keyboard: QMEmoticonsKeyboard, didSelectedEmoji: String)
+    optional func emoticonsKeyboard(keyboard: QMEmoticonsKeyboard, didSelectedEmojiView: QMEmoticonButton)
 }
 
 class QMEmoticonsKeyboard: UIView, UICollectionViewDelegate, UICollectionViewDataSource, QMEmoticonBoardPageNormalCollectionCellDelegate {
@@ -192,10 +192,9 @@ class QMEmoticonsKeyboard: UIView, UICollectionViewDelegate, UICollectionViewDat
         return cell
     }
     
-    // MARK: - QMEmoticonBoardPageNormalCollectionCellDelegate
-    func didSelectedEmoji(image: String, description: String) {
-        print(image)
-        delegate?.emoticonsKeyboard?(self, didSelectedEmoji: image)
+    // MARK: - QMEmoticonBoardPageNormalCollectionCellDelegate    
+    func didSelectedEmojiView(emojiView: QMEmoticonButton) {
+        delegate?.emoticonsKeyboard?(self, didSelectedEmojiView: emojiView)
     }
     
     

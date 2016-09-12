@@ -63,6 +63,10 @@ private let kEmoticonCellWidth: CGFloat = 32.0
 private let kEmoticonCellHeight: CGFloat = 32.0
 
 
+@objc protocol QMInputBarDelegate: NSObjectProtocol {
+    optional func inputBar(inputBar: QMInputBar, didOnClickSendButton sendButton: UIButton)
+}
+
 class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
 
     /*
@@ -72,6 +76,8 @@ class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
         // Drawing code
     }
     */
+    
+    var delegate: QMInputBarDelegate? = nil
     
     /// 单例
     static let instance: QMInputBar = {
@@ -222,10 +228,46 @@ class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
         return QMEmoticonsKeyboard.instance
         
     }()
+    
+    
     // MARK: - QMEmoticonsKeyboardDelegate
-    func emoticonsKeyboard(keyboard: QMEmoticonsKeyboard, didSelectedEmoji: String) {
-        textView.text = textView.text + didSelectedEmoji
+    func emoticonsKeyboard(keyboard: QMEmoticonsKeyboard, didSelectedEmojiView emojiView: QMEmoticonButton) {
+        if emojiView.isDelete {
+            do{
+                var str = textView.text;
+                let pattern = "\\[#imgface\\d+#]$";
+                let regex = try NSRegularExpression(pattern: pattern, options:NSRegularExpressionOptions.CaseInsensitive)
+                let res = regex.matchesInString(str, options: NSMatchingOptions(rawValue: 0), range: NSMakeRange(0, str.characters.count))
+                if res.count > 0 {
+                    str = (str as NSString).stringByReplacingCharactersInRange(res[res.count-1].range, withString: "") as String
+                }
+                else {
+                    print("没有")
+                    var string = str as NSString
+                    
+                    if string.length > 0 {
+                        string = string.substringToIndex(string.length-1)
+                    }
+                    str = string as String
+
+                }
+                textView.text = str
+                text = str
+                print("str: \(str), text: \(text), textView.text: \(textView.text)")
+            }catch{
+                print(error)
+            }
+
+        }
+        else {
+            textView.text = textView.text + emojiView.imageName
+            text = textView.text
+        }
+        
+        
     }
+    
+
     
     private lazy var placeholderLabel: UILabel = {
         let lbl = UILabel(frame: kPlaceholderLabelFrame)
@@ -253,16 +295,44 @@ class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
         btn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         btn.setBackgroundImage(UIImage(named: "button_send_enable"), forState: .Normal)
         btn.setBackgroundImage(UIImage(named: "button_send_disable"), forState: .Selected)
-        
+        btn.addTarget(self, action: #selector(onClickSendButton(_:)), forControlEvents: .TouchUpInside)
         btn.enabled = false
         return btn
     }()
     
+    /**
+     点击发送按钮
+     */
+    func onClickSendButton(sender: UIButton) {
+        delegate?.inputBar?(self, didOnClickSendButton: sender)
+    }
     
+//    // MARK: - UIKeyInput
+//    func deleteBackward() {
+//        // TODO:
+//    }
     
     // MARK: - UITextViewDelegate
     func textViewDidChange(textView: UITextView) {
         text = textView.text
+        let maxTextViewHeight: CGFloat = kTextViewHeight * 4
+        let textViewFrame = textView.frame
+        var constraintSize = CGSizeMake(textViewFrame.size.width, CGFloat.max)
+        var textViewSize = textView.sizeThatFits(constraintSize)
+        let textViewHeight = textViewSize.height
+//        if textViewSize.height <= maxTextViewHeight {
+//            textViewSize.height = textViewFrame.size.height
+//        }
+//        else {
+            if textViewSize.height >= maxTextViewHeight {
+                textViewSize.height = maxTextViewHeight
+                textView.scrollEnabled = true
+            }
+            else {
+                textView.scrollEnabled = false
+            }
+//        }
+        textView.frame = CGRectMake(textViewFrame.origin.x, textViewFrame.origin.y, textViewFrame.size.width, textViewSize.height)
     }
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {

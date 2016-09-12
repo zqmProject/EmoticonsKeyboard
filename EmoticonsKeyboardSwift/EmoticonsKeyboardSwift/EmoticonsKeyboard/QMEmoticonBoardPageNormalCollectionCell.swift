@@ -18,7 +18,7 @@ private let kEmoticonCellHeight: CGFloat = 165.0
 let kQMEmoticonBoardPageNormalCollectionCellReuseIdentifier = "QMEmoticonBoardPageNormalCollectionCell"
 
 @objc protocol QMEmoticonBoardPageNormalCollectionCellDelegate: NSObjectProtocol {
-    optional func didSelectedEmoji(image: String, description: String)
+    optional func didSelectedEmojiView(emojiView: QMEmoticonButton)
 }
 
 class QMEmoticonBoardPageNormalCollectionCell: UICollectionViewCell {
@@ -46,38 +46,41 @@ class QMEmoticonBoardPageNormalCollectionCell: UICollectionViewCell {
         self.contentView.subviews.forEach { $0.removeFromSuperview() }
 
         let lineCount: Int = 3
-        var columnCount: Int = 8
-        if kScreenWidth == 320.0 {
-            columnCount = 7
-        }
-        else if kScreenWidth == 375.0 {
-            columnCount = 8
-        }
-        else if kScreenWidth == 414.0 {
-            columnCount = 9
-        }
+        var columnCount: Int = 7
+//        if kScreenWidth == 320.0 {
+//            columnCount = 7
+//        }
+//        else if kScreenWidth == 375.0 {
+//            columnCount = 8
+//        }
+//        else if kScreenWidth == 414.0 {
+//            columnCount = 9
+//        }
         
         let itemWH: CGFloat = 30.0
         let edgeDistance: CGFloat = 10.0
         
         let vMargin: CGFloat = (kEmoticonCellHeight - CGFloat(lineCount)*itemWH) / CGFloat(lineCount + 1)
         let hMargin: CGFloat = (kScreenWidth - CGFloat(columnCount)*itemWH - edgeDistance*2) / CGFloat(columnCount)
-//        let lCount = images.count / (lineCount+columnCount) + (images.count % (lineCount * columnCount) > 0 ? 1:0)
-        
         
         for i in 0 ..< lineCount {
             for j in 0 ..< columnCount {
-                let btn = QMEmoticonUIButton(type: UIButtonType.Custom)
+                let btn = QMEmoticonButton(type: UIButtonType.Custom)
                 btn.backgroundColor = UIColor.yellowColor()
                 let btnX = CGFloat(j)*itemWH + edgeDistance + CGFloat(j)*hMargin
                 let btnY = CGFloat(i)*itemWH + CGFloat(i+1)*vMargin
                 btn.frame = CGRectMake(btnX, btnY, itemWH, itemWH)
-                let index = columnCount * lineCount * indexPath.item + i * columnCount + j + 1
-                let imageName: String = "[#imgface\(index)#]"
+                let index = columnCount * lineCount * indexPath.item + i * columnCount + j + 1 - indexPath.item * 1
+                var imageName: String = "[#imgface\(index)#]"
 //                if index >= images.count {
 //                    break
 //                }
 //                let imageName: String = images[index]
+                if i == 2 && j == 6 {
+                    print("最后一个\(i+1) - \(j+1)")
+                    imageName = "button_delete"
+                    btn.isDelete = true
+                }
                 btn.imageName = imageName
                 btn.addTarget(self, action: #selector(didSelectEmoji(_:)), forControlEvents: .TouchUpInside)
                 btn.setImage(UIImage(named: imageName), forState: UIControlState.Normal)
@@ -85,8 +88,11 @@ class QMEmoticonBoardPageNormalCollectionCell: UICollectionViewCell {
             }
         }
     }
-    func didSelectEmoji(sender: QMEmoticonUIButton) {
-        delegate?.didSelectedEmoji?(sender.imageName, description: "")
+    func didSelectEmoji(sender: QMEmoticonButton) {
+        print("========")
+        print("sender: \(sender)")
+        print("========")
+        delegate?.didSelectedEmojiView?(sender)
     }
     
 }
