@@ -95,7 +95,8 @@
 		9B2241591D828207000C5D5E /* QMEmoticonsKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2241581D828207000C5D5E /* QMEmoticonsKeyboard.swift */; };
 		9B22415B1D82866D000C5D5E /* QMInputBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B22415A1D82866D000C5D5E /* QMInputBar.swift */; };
 		9B2241651D82E74D000C5D5E /* QMEmoticonBoardPageNormalCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2241641D82E74D000C5D5E /* QMEmoticonBoardPageNormalCollectionCell.swift */; };
-		9B2241671D830C90000C5D5E /* QMEmoticonUIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2241661D830C90000C5D5E /* QMEmoticonUIButton.swift */; };
+		9B2241691D83F3FE000C5D5E /* QMEmoticonButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2241681D83F3FE000C5D5E /* QMEmoticonButton.swift */; };
+		9B22416D1D8409EF000C5D5E /* QMEmoticonTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B22416C1D8409EF000C5D5E /* QMEmoticonTextView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -189,7 +190,8 @@
 		9B2241581D828207000C5D5E /* QMEmoticonsKeyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QMEmoticonsKeyboard.swift; sourceTree = "<group>"; };
 		9B22415A1D82866D000C5D5E /* QMInputBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QMInputBar.swift; sourceTree = "<group>"; };
 		9B2241641D82E74D000C5D5E /* QMEmoticonBoardPageNormalCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QMEmoticonBoardPageNormalCollectionCell.swift; sourceTree = "<group>"; };
-		9B2241661D830C90000C5D5E /* QMEmoticonUIButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QMEmoticonUIButton.swift; sourceTree = "<group>"; };
+		9B2241681D83F3FE000C5D5E /* QMEmoticonButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QMEmoticonButton.swift; sourceTree = "<group>"; };
+		9B22416C1D8409EF000C5D5E /* QMEmoticonTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QMEmoticonTextView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -240,7 +242,8 @@
 				9B2241581D828207000C5D5E /* QMEmoticonsKeyboard.swift */,
 				9B22415A1D82866D000C5D5E /* QMInputBar.swift */,
 				9B2241641D82E74D000C5D5E /* QMEmoticonBoardPageNormalCollectionCell.swift */,
-				9B2241661D830C90000C5D5E /* QMEmoticonUIButton.swift */,
+				9B2241681D83F3FE000C5D5E /* QMEmoticonButton.swift */,
+				9B22416C1D8409EF000C5D5E /* QMEmoticonTextView.swift */,
 			);
 			path = EmoticonsKeyboard;
 			sourceTree = "<group>";
@@ -492,9 +495,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B22409F1D827D5A000C5D5E /* ViewController.swift in Sources */,
-				9B2241671D830C90000C5D5E /* QMEmoticonUIButton.swift in Sources */,
 				9B2241591D828207000C5D5E /* QMEmoticonsKeyboard.swift in Sources */,
+				9B2241691D83F3FE000C5D5E /* QMEmoticonButton.swift in Sources */,
 				9B22415B1D82866D000C5D5E /* QMInputBar.swift in Sources */,
+				9B22416D1D8409EF000C5D5E /* QMEmoticonTextView.swift in Sources */,
 				9B22409D1D827D5A000C5D5E /* AppDelegate.swift in Sources */,
 				9B2241651D82E74D000C5D5E /* QMEmoticonBoardPageNormalCollectionCell.swift in Sources */,
 			);
@@ -648,6 +652,7 @@
 				9B2240AD1D827D5A000C5D5E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
