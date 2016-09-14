@@ -16,7 +16,9 @@ class ViewController: UIViewController, QMInputBarDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        self.view.addSubview(QMInputBar.instance)
+        view.backgroundColor = UIColor.purpleColor()
+        
+        
         QMInputBar.instance.placeholder = "请输入..."
         QMInputBar.instance.delegate = self
         
@@ -30,12 +32,12 @@ class ViewController: UIViewController, QMInputBarDelegate {
 //        let kb = QMEmoticonsKeyboard.instance
 //        ttv.inputView = kb
         
-        let btn = UIButton(frame: CGRectMake(50, 200, 100, 100))
+        let btn = UIButton(frame: CGRectMake(50, 350, 100, 100))
         btn.addTarget(self, action: #selector(feedbadk), forControlEvents: .TouchUpInside)
         btn.backgroundColor = UIColor.orangeColor()
         self.view.addSubview(btn)
         
-
+        self.view.addSubview(QMInputBar.instance)
         
     }
     

@@ -22,7 +22,7 @@ class QMEmoticonTextView: UITextView {
     }
     */
     
-    var emotionDelegate: QMEmoticonTextViewDelegate? = nil
+    var emotionTextViewDelegate: QMEmoticonTextViewDelegate? = nil
 
     override func deleteBackward() {
         if false {
@@ -30,4 +30,5 @@ class QMEmoticonTextView: UITextView {
         }
         super.deleteBackward()
     }
+    
 }

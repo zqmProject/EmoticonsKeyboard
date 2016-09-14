@@ -54,6 +54,7 @@ private let kTextViewX: CGFloat = kPaddingLeft + kEmojiButtonWidth + 10.0
 private let kTextViewY: CGFloat = kPaddingTop + kLineViewHeght
 private let kTextViewWidth: CGFloat = kScreenWidth - kTextViewX - 10.0 - kSendButtonWidth - kPaddingRight
 private let kTextViewHeight: CGFloat = 33.0
+private let kTextViewFont: UIFont = UIFont.systemFontOfSize(14.0)
 private let kTextViewFrame: CGRect = CGRectMake(kTextViewX, kTextViewY, kTextViewWidth, kTextViewHeight)
 private let kPlaceholderLabelFrame: CGRect = CGRectMake(kTextViewX + 5.0, kTextViewY, kTextViewWidth - 5.0, kTextViewHeight)
 
@@ -82,6 +83,7 @@ class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
     /// 单例
     static let instance: QMInputBar = {
         let bar = QMInputBar(frame: kInputBarDefaultFrame)
+        bar.backgroundColor = UIColor.whiteColor()
         return bar
     }()
     
@@ -278,11 +280,12 @@ class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
     
     lazy var textView: UITextView = {
         let ttv: UITextView = UITextView(frame: kTextViewFrame)
+        ttv.backgroundColor = UIColor.whiteColor()
         ttv.delegate = self
         ttv.returnKeyType = .Send
         ttv.scrollEnabled = false
         ttv.showsVerticalScrollIndicator = false
-        ttv.font = UIFont.systemFontOfSize(14.0)
+        ttv.font = kTextViewFont
         ttv.enablesReturnKeyAutomatically = true
         ttv.textColor = UIColor(red: 102.0/225.0, green: 102.0/225.0, blue: 102.0/225.0, alpha: 1.0)
         return ttv
@@ -305,6 +308,7 @@ class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
      */
     func onClickSendButton(sender: UIButton) {
         delegate?.inputBar?(self, didOnClickSendButton: sender)
+        text = ""
     }
     
 //    // MARK: - UIKeyInput
@@ -315,24 +319,7 @@ class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
     // MARK: - UITextViewDelegate
     func textViewDidChange(textView: UITextView) {
         text = textView.text
-        let maxTextViewHeight: CGFloat = kTextViewHeight * 4
-        let textViewFrame = textView.frame
-        var constraintSize = CGSizeMake(textViewFrame.size.width, CGFloat.max)
-        var textViewSize = textView.sizeThatFits(constraintSize)
-        let textViewHeight = textViewSize.height
-//        if textViewSize.height <= maxTextViewHeight {
-//            textViewSize.height = textViewFrame.size.height
-//        }
-//        else {
-            if textViewSize.height >= maxTextViewHeight {
-                textViewSize.height = maxTextViewHeight
-                textView.scrollEnabled = true
-            }
-            else {
-                textView.scrollEnabled = false
-            }
-//        }
-        textView.frame = CGRectMake(textViewFrame.origin.x, textViewFrame.origin.y, textViewFrame.size.width, textViewSize.height)
+        adjustFrame()
     }
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
@@ -342,5 +329,94 @@ class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
         else {
             return true
         }
+    }
+    
+    // MARK: - 重绘layout
+    
+    func layoutUI() {
+        
+        adjustTextViewHeight()
+    }
+    
+    func adjustFrame() {
+        
+        let maxNumberLines = 3
+        
+        let maxTextViewHeight: CGFloat = 33.0 * CGFloat(maxNumberLines)
+
+        // TODO: 计算TextViewHeight
+        var textViewFrame = textView.frame
+        let constraintSize = CGSizeMake(textViewFrame.size.width, CGFloat.max)
+        let textViewSize = textView.sizeThatFits(constraintSize)
+        var textViewHeight = textViewSize.height
+        
+        if textViewHeight > maxTextViewHeight - 10.0 {
+            // 计算出来的结果大于最大高度时
+            textViewHeight = maxTextViewHeight
+        }
+        else {
+            
+        }
+        // TODO: 计算textView.frame
+        textViewFrame.size.height = textViewHeight
+//        textViewFrame.origin.y = kTextViewY
+        textView.frame = textViewFrame
+        
+        // TODO: 计算self.frame
+        var prevFrame = frame
+        let nHeight = kInputBarDefaultHeight + textViewHeight - kTextViewHeight
+        prevFrame.size.height = nHeight
+        prevFrame.origin.y = kScreenHeight - kInputBarDefaultEdgeInsetTop - kInputBarDefaultHeight //- (nHeight - textViewHeight)
+        print("prevFrame.origin.y: \(prevFrame.origin.y)")
+        frame = prevFrame
+        print("nHeight: \(nHeight)")
+        // TODO: 计算topLineView.frame
+        // TODO: 计算bottomLineView.frame
+        // TODO: 计算emojiButton.frame
+        // TODO: 计算sendButton.frame
+        // TODO: 
+        // TODO: 
+        // TODO:
+
+    }
+    
+    func adjustTextViewHeight() {
+        let prevFrame = textView.frame
+        
+        let maxNumberLines = 3
+        
+//        let maxTextViewHeight: CGFloat = 14.0 * CGFloat(maxNumberLines)
+        
+        print("")
+        
+        
+        let maxTextViewHeight: CGFloat = kTextViewHeight * 4
+        let textViewFrame = textView.frame
+        var constraintSize = CGSizeMake(textViewFrame.size.width, CGFloat.max)
+        var textViewSize = textView.sizeThatFits(constraintSize)
+        let textViewHeight = textViewSize.height
+        //        if textViewSize.height <= maxTextViewHeight {
+        //            textViewSize.height = textViewFrame.size.height
+        //        }
+        //        else {
+        if textViewSize.height >= maxTextViewHeight {
+            textViewSize.height = maxTextViewHeight
+            textView.scrollEnabled = true
+            print("kTextViewHeight * 4")
+        }
+        else {
+            textViewSize.height = textViewHeight
+            print("textViewHeight")
+            textView.scrollEnabled = false
+        }
+        //        }
+        textView.frame = CGRectMake(textViewFrame.origin.x, textViewFrame.origin.y, textViewFrame.size.width, textViewHeight)
+//        var prevFrame = frame
+//        let maxY = CGRectGetMaxY(prevFrame)
+//        prevFrame.size.height = textViewSize.height + 20.0
+//        prevFrame.origin.y = maxY - textViewSize.height
+//        print("prevFrame: \(prevFrame)")
+//        frame = prevFrame
+        
     }
 }
