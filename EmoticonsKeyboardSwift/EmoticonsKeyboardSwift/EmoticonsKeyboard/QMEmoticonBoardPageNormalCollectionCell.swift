@@ -34,7 +34,7 @@ class QMEmoticonBoardPageNormalCollectionCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor.greenColor()
+        self.backgroundColor = UIColor.whiteColor()
 //        self.configureSubviews()
     }
     
@@ -66,7 +66,8 @@ class QMEmoticonBoardPageNormalCollectionCell: UICollectionViewCell {
         for i in 0 ..< lineCount {
             for j in 0 ..< columnCount {
                 let btn = QMEmoticonButton(type: UIButtonType.Custom)
-                btn.backgroundColor = UIColor.yellowColor()
+//                btn.backgroundColor = UIColor.yellowColor()
+                btn.backgroundColor = UIColor.whiteColor()
                 let btnX = CGFloat(j)*itemWH + edgeDistance + CGFloat(j)*hMargin
                 let btnY = CGFloat(i)*itemWH + CGFloat(i+1)*vMargin
                 btn.frame = CGRectMake(btnX, btnY, itemWH, itemWH)

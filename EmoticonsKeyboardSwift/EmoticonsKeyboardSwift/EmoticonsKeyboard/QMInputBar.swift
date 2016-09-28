@@ -78,8 +78,11 @@ class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
     }
     */
     
-    var delegate: QMInputBarDelegate? = nil
+    /// translucent: 透明.(true:无tabbar或者tabbar为透明时.false:barbar不透明(opaque))
+    var translucent: Bool = true
     
+    var delegate: QMInputBarDelegate? = nil
+    var inputOriginY: CGFloat = kScreenHeight - kInputBarDefaultEdgeInsetTop - kInputBarDefaultHeight
     /// 单例
     static let instance: QMInputBar = {
         let bar = QMInputBar(frame: kInputBarDefaultFrame)
@@ -89,27 +92,93 @@ class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configure()
+        configureSubviews()
+        configureLayout()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure() {
+    func configureSubviews() {
         
         self.addSubview(vTopLine)
-        self.addSubview(emojiButton)
+        self.addSubview(btnEmoji)
         
         self.addSubview(textView)
         self.addSubview(placeholderLabel)
-        self.addSubview(sendButton)
+        self.addSubview(btnSend)
         
         self.addSubview(vBottomLine)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: UIKeyboardWillChangeFrameNotification, object: nil)
     }
     
+    
+    // MARK: - 设置布局(约束)
+    func configureLayout() {
+        
+        layoutTopLineView()
+        layoutBottomView()
+        layoutEmojiButton()
+        layoutTextView()
+        layoutSendButton()
+    }
+    
+    func layoutTopLineView() {
+        let topConstraint = NSLayoutConstraint(item: vTopLine, attribute: .Top, relatedBy: .Equal, toItem: self, attribute: .Top, multiplier: 1.0, constant: 0.0)
+        let leadingConstraint = NSLayoutConstraint(item: self, attribute: .Leading, relatedBy: .Equal, toItem: vTopLine, attribute: .Leading, multiplier: 1.0, constant: 0.0)
+        let trailingConstraint = NSLayoutConstraint(item: self, attribute: .Trailing, relatedBy: .Equal, toItem: vTopLine, attribute: .Trailing, multiplier: 1.0, constant: 0.0)
+        let heightConstraint = NSLayoutConstraint(item: vTopLine, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: 0.5)
+        self.addConstraints([topConstraint, leadingConstraint, trailingConstraint, heightConstraint])
+    }
+    
+    func layoutBottomView() {
+        let topConstraint = NSLayoutConstraint(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: vBottomLine, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
+        let leadingConstraint = NSLayoutConstraint(item: self, attribute: .Leading, relatedBy: .Equal, toItem: vBottomLine, attribute: .Leading, multiplier: 1.0, constant: 0.0)
+        let trailingConstraint = NSLayoutConstraint(item: self, attribute: .Trailing, relatedBy: .Equal, toItem: vBottomLine, attribute: .Trailing, multiplier: 1.0, constant: 0.0)
+        let heightConstraint = NSLayoutConstraint(item: vBottomLine, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: 0.5)
+        self.addConstraints([topConstraint, leadingConstraint, trailingConstraint, heightConstraint])
+    }
+    
+    func layoutEmojiButton() {
+        
+        let leadingConstraint = NSLayoutConstraint(item: self, attribute: .Leading, relatedBy: .Equal, toItem: btnEmoji, attribute: .Leading, multiplier: 1.0, constant: -13.0)
+        
+        let bottomConstraint = NSLayoutConstraint(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: btnEmoji, attribute: .Bottom, multiplier: 1.0, constant: 8.0)
+        
+        let widthConstraint = NSLayoutConstraint(item: btnEmoji, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: 33.0)
+        
+        let heightConstraint = NSLayoutConstraint(item: btnEmoji, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: 33.0)
+        
+        
+        self.addConstraints([leadingConstraint, bottomConstraint, widthConstraint, heightConstraint])
+    }
+    
+    func layoutSendButton() {
+        let trailingConstraint = NSLayoutConstraint(item: self, attribute: .Trailing, relatedBy: .Equal, toItem: btnSend, attribute: .Trailing, multiplier: 1.0, constant: 13.0)
+        let bottomConstraint = NSLayoutConstraint(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: btnSend, attribute: .Bottom, multiplier: 1.0, constant: 8.0)
+        
+        let widthConstraint = NSLayoutConstraint(item: btnSend, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: 50.0)
+        
+        let heightConstraint = NSLayoutConstraint(item: btnSend, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: 33.0)
+        
+        self.addConstraints([trailingConstraint, bottomConstraint, widthConstraint, heightConstraint])
+    }
+    
+    func layoutTextView() {
+        let topConstraint = NSLayoutConstraint(item: self, attribute: .Top, relatedBy: .Equal, toItem: textView, attribute: .Top, multiplier: 1.0, constant: -8.0)
+        
+        let bottomConstraint = NSLayoutConstraint(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: textView, attribute: .Bottom, multiplier: 1.0, constant: 8.0)
+        
+        let leadingConstraint = NSLayoutConstraint(item: btnEmoji, attribute: .Trailing, relatedBy: .Equal, toItem: textView, attribute: .Leading, multiplier: 1.0, constant: -10.0)
+        
+        let trailingConstraint = NSLayoutConstraint(item: btnSend, attribute: .Leading, relatedBy: .Equal, toItem: textView, attribute: .Trailing, multiplier: 1.0, constant: 10.0)
+        
+        self.addConstraints([topConstraint, bottomConstraint, leadingConstraint, trailingConstraint])
+    }
+    
+    // MARK: - 监听键盘
     func keyboardWillChangeFrame(notification: NSNotification) {
 
         if let userInfo = notification.userInfo {
@@ -121,9 +190,10 @@ class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
             
             
             var keyboardHeight: CGFloat = endFrame?.size.height ?? 0.0
-            
+            print("keyboardHeight: \(keyboardHeight)")
             var edgeInsetTop: CGFloat = 0.0
             
+            print("self.superview?.frame : \(self.superview?.frame)")
             if endFrame?.origin.y >= UIScreen.mainScreen().bounds.size.height {
                 keyboardHeight = 0.0
                 edgeInsetTop = kInputBarDefaultEdgeInsetTop
@@ -132,8 +202,20 @@ class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
                 edgeInsetTop = 0.0
             }
             var f = self.frame
-            f.origin.y = kScreenHeight - edgeInsetTop - kInputBarDefaultHeight - keyboardHeight
             
+            var superViewHeight: CGFloat = self.superview?.frame.height ?? kScreenHeight
+
+            if translucent {
+                // 透明
+            }
+            else {
+                // opaque: 不透明
+                let kBottomHeight: CGFloat = 49.0
+                superViewHeight += kBottomHeight
+            }
+            
+            f.origin.y = superViewHeight - edgeInsetTop - kInputBarDefaultHeight - keyboardHeight
+            inputOriginY = f.origin.y
             
             UIView.animateWithDuration(duration,
                                        delay: NSTimeInterval(0),
@@ -159,13 +241,15 @@ class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
         didSet {
             if text != "" {
                 placeholderLabel.hidden = true
-                sendButton.enabled = true
+                btnSend.enabled = true
             }
             else {
                 placeholderLabel.hidden = false
-                sendButton.enabled = false
+                btnSend.enabled = false
             }
-            textView.text = text
+//            textView.text = text
+//            textView.setNeedsDisplay()
+            adjustFrame()
         }
     }
     
@@ -180,6 +264,7 @@ class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
     /// 顶部分割线
     private let vTopLine: UIView = {
         let v = UIView(frame: kTopLineViewFrame)
+        v.translatesAutoresizingMaskIntoConstraints = false
         v.backgroundColor = UIColor.lightGrayColor()
         return v
     }()
@@ -188,6 +273,7 @@ class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
     private let vBottomLine: UIView = {
         let v = UIView(frame: kBottomLineViewFrame)
         v.backgroundColor = UIColor.lightGrayColor()
+        v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
     
@@ -196,9 +282,9 @@ class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
     
     private var inputBarSizeChangedHandler: ((Void) -> Void)? = nil
     
-    private lazy var emojiButton: UIButton = {
+    private lazy var btnEmoji: UIButton = {
         let btn = UIButton(frame: kEmojiButtonFrame)
-        
+        btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setImage(UIImage(named: "button_keyboard_emoji"), forState: UIControlState.Normal)
         btn.setImage(UIImage(named: "button_keyboard_normal"), forState: UIControlState.Selected)
         
@@ -235,7 +321,7 @@ class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
     // MARK: - QMEmoticonsKeyboardDelegate
     func emoticonsKeyboard(keyboard: QMEmoticonsKeyboard, didSelectedEmojiView emojiView: QMEmoticonButton) {
         if emojiView.isDelete {
-            do{
+            do {
                 var str = textView.text;
                 let pattern = "\\[#imgface\\d+#]$";
                 let regex = try NSRegularExpression(pattern: pattern, options:NSRegularExpressionOptions.CaseInsensitive)
@@ -262,8 +348,10 @@ class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
 
         }
         else {
-            textView.text = textView.text + emojiView.imageName
-            text = textView.text
+            let str: String = text.stringByAppendingString(emojiView.imageName)
+            textView.text = str
+            
+            text = str
         }
         
         
@@ -278,10 +366,13 @@ class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
         return lbl
     }()
     
-    lazy var textView: UITextView = {
-        let ttv: UITextView = UITextView(frame: kTextViewFrame)
-        ttv.backgroundColor = UIColor.whiteColor()
+    lazy var textView: QMEmoticonTextView = {
+        let ttv: QMEmoticonTextView = QMEmoticonTextView(frame: kTextViewFrame)
+        ttv.translatesAutoresizingMaskIntoConstraints = false
+//        ttv.textContainer.lineBreakMode = .ByClipping
+        ttv.backgroundColor = UIColor.yellowColor()
         ttv.delegate = self
+        ttv.text = "[#imgface80#][#imgface80#][#imgface80#]a[#imgface80#]a[#imgface80#]"
         ttv.returnKeyType = .Send
         ttv.scrollEnabled = false
         ttv.showsVerticalScrollIndicator = false
@@ -291,8 +382,9 @@ class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
         return ttv
     }()
     
-    private lazy var sendButton: UIButton = {
+    private lazy var btnSend: UIButton = {
         let btn = UIButton(frame: kSendButtonFrame)
+        btn.translatesAutoresizingMaskIntoConstraints = false
         btn.titleLabel?.font = UIFont.systemFontOfSize(14.0)
         btn.setTitle("发送", forState: .Normal)
         btn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
@@ -309,6 +401,7 @@ class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
     func onClickSendButton(sender: UIButton) {
         delegate?.inputBar?(self, didOnClickSendButton: sender)
         text = ""
+        textView.text = ""
     }
     
 //    // MARK: - UIKeyInput
@@ -319,10 +412,12 @@ class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
     // MARK: - UITextViewDelegate
     func textViewDidChange(textView: UITextView) {
         text = textView.text
-        adjustFrame()
+//        adjustFrame()
+        print("self.text: \(self.text), textView.text: \(textView.text)")
     }
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        
         if text == "\n" {
             return false
         }
@@ -331,18 +426,13 @@ class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
         }
     }
     
-    // MARK: - 重绘layout
-    
-    func layoutUI() {
-        
-        adjustTextViewHeight()
-    }
     
     func adjustFrame() {
         
         let maxNumberLines = 3
         
-        let maxTextViewHeight: CGFloat = 33.0 * CGFloat(maxNumberLines)
+        let maxTextViewHeight: CGFloat = (textView.font?.lineHeight ?? 33.0) * CGFloat(maxNumberLines)
+        print("maxTextViewHeight: \(maxTextViewHeight)")
 
         // TODO: 计算TextViewHeight
         var textViewFrame = textView.frame
@@ -350,13 +440,20 @@ class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
         let textViewSize = textView.sizeThatFits(constraintSize)
         var textViewHeight = textViewSize.height
         
+        
         if textViewHeight > maxTextViewHeight - 10.0 {
             // 计算出来的结果大于最大高度时
             textViewHeight = maxTextViewHeight
+            textView.scrollEnabled = true
+//            inputOriginY = maxTextViewHeight + 10.0
         }
         else {
-            
+//            inputOriginY = textViewHeight + 10.0
         }
+        print("textViewHeight: \(textViewHeight)")
+        
+        
+        /*
         // TODO: 计算textView.frame
         textViewFrame.size.height = textViewHeight
 //        textViewFrame.origin.y = kTextViewY
@@ -366,7 +463,9 @@ class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
         var prevFrame = frame
         let nHeight = kInputBarDefaultHeight + textViewHeight - kTextViewHeight
         prevFrame.size.height = nHeight
-        prevFrame.origin.y = kScreenHeight - kInputBarDefaultEdgeInsetTop - kInputBarDefaultHeight //- (nHeight - textViewHeight)
+        print("textViewHeight - kTextViewHeight: \(textViewHeight - kTextViewHeight)")
+        print("prevFrame.origin.y: \(prevFrame.origin.y)")
+        prevFrame.origin.y = inputOriginY - (textViewHeight - kTextViewHeight)// kScreenHeight - kInputBarDefaultEdgeInsetTop - kInputBarDefaultHeight //- (nHeight - textViewHeight)
         print("prevFrame.origin.y: \(prevFrame.origin.y)")
         frame = prevFrame
         print("nHeight: \(nHeight)")
@@ -377,7 +476,7 @@ class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
         // TODO: 
         // TODO: 
         // TODO:
-
+*/
     }
     
     func adjustTextViewHeight() {
@@ -418,5 +517,8 @@ class QMInputBar: UIView, UITextViewDelegate, QMEmoticonsKeyboardDelegate {
 //        print("prevFrame: \(prevFrame)")
 //        frame = prevFrame
         
+    }
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillChangeFrameNotification, object: nil)
     }
 }

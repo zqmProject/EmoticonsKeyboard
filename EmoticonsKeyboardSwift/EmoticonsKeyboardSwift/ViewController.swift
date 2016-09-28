@@ -16,11 +16,12 @@ class ViewController: UIViewController, QMInputBarDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        view.backgroundColor = UIColor.purpleColor()
+        view.backgroundColor = UIColor.whiteColor()
         
         
         QMInputBar.instance.placeholder = "请输入..."
         QMInputBar.instance.delegate = self
+        QMInputBar.instance.translucent = true
         
         
         ttv.backgroundColor = UIColor.yellowColor()
@@ -36,7 +37,7 @@ class ViewController: UIViewController, QMInputBarDelegate {
         btn.addTarget(self, action: #selector(feedbadk), forControlEvents: .TouchUpInside)
         btn.backgroundColor = UIColor.orangeColor()
         self.view.addSubview(btn)
-        
+//        QMInputBar.instance.textView.text = "[#imgface80#][#imgface80#][#imgface80#][#imgface80#][#imgface80#]"
         self.view.addSubview(QMInputBar.instance)
         
     }

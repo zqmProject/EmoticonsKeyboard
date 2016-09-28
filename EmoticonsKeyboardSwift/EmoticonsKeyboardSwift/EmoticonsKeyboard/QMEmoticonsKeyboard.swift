@@ -149,12 +149,20 @@ class QMEmoticonsKeyboard: UIView, UICollectionViewDelegate, UICollectionViewDat
         return clv
     }()
     
+    lazy var pageControl: UIPageControl = {
+        let pageControl = UIPageControl(frame: CGRectMake(0, 0, kScreenWidth, 30))
+        pageControl.center = CGPointMake(kScreenWidth / 2, 175)
+        
+        return pageControl
+    }()
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     func configureSubviews() {
         self.addSubview(collectionView)
+        self.addSubview(pageControl)
     }
     
     
@@ -178,6 +186,7 @@ class QMEmoticonsKeyboard: UIView, UICollectionViewDelegate, UICollectionViewDat
         }
         let s0 = dataSources[section] as! NSDictionary
         let count = (s0["datasource"] as! [AnyObject]).count ?? 0
+        pageControl.numberOfPages = count / (lineCount * columnCount) + (count % (lineCount * columnCount) > 0 ? 1: 0)
         return count / (lineCount * columnCount) + (count % (lineCount * columnCount) > 0 ? 1: 0)
     }
     
@@ -188,6 +197,7 @@ class QMEmoticonsKeyboard: UIView, UICollectionViewDelegate, UICollectionViewDat
         let sss = (datasource["datasource"] as! [NSDictionary])
 //        cell.images =
         print(sss)
+        pageControl.currentPage = indexPath.item
         cell.delegate = self
         return cell
     }

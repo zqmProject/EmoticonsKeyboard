@@ -25,10 +25,31 @@ class QMEmoticonTextView: UITextView {
     var emotionTextViewDelegate: QMEmoticonTextViewDelegate? = nil
 
     override func deleteBackward() {
-        if false {
+        
+        do{
+            var str = self.text
+            let pattern = "\\[#imgface\\d+#]$"
+            let regex = try NSRegularExpression(pattern: pattern, options:NSRegularExpressionOptions.CaseInsensitive)
+            let res = regex.matchesInString(str, options: NSMatchingOptions(rawValue: 0), range: NSMakeRange(0, str.characters.count))
+            if res.count > 0 {
+                str = (str as NSString).stringByReplacingCharactersInRange(res[res.count-1].range, withString: "") as String
+                self.text = str
+                delegate?.textViewDidChange?(self)
+                print("delete: \(str)")
+            }
+            else {
+                
+                super.deleteBackward()
+                
+            }
             
+        }catch{
+            super.deleteBackward()
+            print(error)
         }
-        super.deleteBackward()
+
+        
+        
     }
     
 }
